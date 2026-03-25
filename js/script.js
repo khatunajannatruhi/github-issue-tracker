@@ -251,3 +251,43 @@ function displayIssueModal(issue) {
     
     issueModal.showModal();
 }
+
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+
+async function searchIssues(query) {
+    if (!query.trim()) {
+        filteredIssues = filterByTab(allIssues, currentTab);
+        renderIssues(filteredIssues);
+        return;
+    }
+
+    showLoading(true);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/issues/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        if (data.status === 'success' && data.data) {
+            filteredIssues = filterByTab(data.data, currentTab);
+            renderIssues(filteredIssues);
+        } else {
+            issuesGrid.innerHTML = '<p class="text-center text-gray-500 col-span-4">No issues found.</p>';
+            updateIssueCount(0);
+        }
+    } catch (error) {
+        console.error('Error searching:', error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+searchBtn.addEventListener('click', () => {
+    searchIssues(searchInput.value);
+});
+
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        searchIssues(searchInput.value);
+    }
+});
