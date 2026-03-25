@@ -1,0 +1,121 @@
+/* Custom Styles for GitHub Issues Tracker */
+
+/* Card Borders based on status */
+.card-open {
+    border-top: 4px solid #22c55e; /* Green for Open */
+}
+
+.card-closed {
+    border-top: 4px solid #a855f7; /* Purple for Closed */
+}
+
+/* Status Icon Colors */
+.status-open {
+    color: #22c55e;
+}
+
+.status-closed {
+    color: #a855f7;
+}
+
+/* Tab Active States */
+.tab-active-all {
+    background-color: #facc15 !important;
+    color: #000 !important;
+}
+
+.tab-active-open {
+    background-color: #22c55e !important;
+    color: #fff !important;
+}
+
+.tab-active-closed {
+    background-color: #7c3aed !important;
+    color: #fff !important;
+}
+
+/* Priority Badge Colors */
+.priority-high {
+    background-color: #ef4444;
+    color: white;
+}
+
+.priority-medium {
+    background-color: #f97316;
+    color: white;
+}
+
+.priority-low {
+    background-color: #9ca3af;
+    color: white;
+}
+
+/* Label Colors */
+.label-bug {
+    background-color: #ef4444;
+    color: white;
+}
+
+.label-enhancement {
+    background-color: #22c55e;
+    color: white;
+}
+
+.label-help-wanted {
+    background-color: #f97316;
+    color: white;
+}
+
+.label-documentation {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.label-feature {
+    background-color: #8b5cf6;
+    color: white;
+}
+
+/* Issue Card Hover Effect */
+.issue-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.issue-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Status Badge */
+.status-badge-open {
+    background-color: #22c55e;
+    color: white;
+}
+
+.status-badge-closed {
+    background-color: #7c3aed;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .navbar .flex-none {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .navbar .input-group {
+        width: 100%;
+    }
+    
+    .navbar .input-group input {
+        width: 100%;
+    }
+}
