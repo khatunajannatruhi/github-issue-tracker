@@ -202,3 +202,52 @@ tabs.forEach(tab => {
         setActiveTab(tab.dataset.tab);
     });
 });
+
+const issueModal = document.getElementById('issue-modal');
+
+// Update createIssueCard to add click handler
+// In createIssueCard function, add: card.onclick = () => openIssueModal(issue);
+
+async function openIssueModal(issue) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/issue/${issue.id}`);
+        const data = await response.json();
+        
+        if (data.status === 'success' && data.data) {
+            displayIssueModal(data.data);
+        } else {
+            displayIssueModal(issue);
+        }
+    } catch (error) {
+        displayIssueModal(issue);
+    }
+}
+
+function displayIssueModal(issue) {
+    const isOpen = issue.status.toLowerCase() === 'open';
+    
+    document.getElementById('modal-title').textContent = issue.title;
+    document.getElementById('modal-description').textContent = issue.description;
+    document.getElementById('modal-author').textContent = issue.author;
+    document.getElementById('modal-assignee').textContent = issue.author;
+    
+    const statusBadge = document.getElementById('modal-status');
+    statusBadge.textContent = isOpen ? 'Opened' : 'Closed';
+    statusBadge.className = `badge ${isOpen ? 'bg-green-500 text-white' : 'bg-purple-600 text-white'}`;
+    
+    const createdDate = new Date(issue.createdAt).toLocaleDateString('en-US', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+    document.getElementById('modal-date').textContent = createdDate;
+    
+    const priorityBadge = document.getElementById('modal-priority');
+    priorityBadge.textContent = issue.priority;
+    priorityBadge.className = 'badge bg-red-500 text-white';
+    
+    const labelsContainer = document.getElementById('modal-labels');
+    labelsContainer.innerHTML = issue.labels.map(label => 
+        `<span class="badge bg-orange-500 text-white">${label}</span>`
+    ).join('');
+    
+    issueModal.showModal();
+}

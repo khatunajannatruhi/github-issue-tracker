@@ -132,6 +132,38 @@
             </div>
         </div>
 
+    <!-- Issue Detail Modal -->
+    <dialog id="issue-modal" class="modal">
+        <div class="modal-box bg-white max-w-lg">
+            <h3 id="modal-title" class="font-bold text-lg text-gray-800"></h3>
+            <div class="flex items-center gap-2 mt-2">
+                <span id="modal-status" class="badge"></span>
+                <span class="text-gray-500 text-sm">• Opened by <span id="modal-author" class="font-semibold"></span></span>
+                <span class="text-gray-500 text-sm">• <span id="modal-date"></span></span>
+            </div>
+            <div id="modal-labels" class="flex gap-2 mt-3"></div>
+            <p id="modal-description" class="py-4 text-gray-600"></p>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <div>
+                    <p class="text-gray-500 text-sm">Assignee:</p>
+                    <p id="modal-assignee" class="font-semibold text-gray-800"></p>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Priority:</p>
+                    <span id="modal-priority" class="badge"></span>
+                </div>
+            </div>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn bg-blue-600 hover:bg-blue-700 border-none text-white">Close</button>
+                </form>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
     <script src="./js/script.js"></script>
 
 </body>
