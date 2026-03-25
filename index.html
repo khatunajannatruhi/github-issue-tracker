@@ -89,6 +89,49 @@
         </nav>
     </div>
 
+        <!-- Main Content -->
+        <div class="container mx-auto px-6 py-8">
+            <!-- Tabs -->
+            <div class="tabs tabs-boxed bg-white w-fit mb-6 p-1 rounded-lg shadow">
+                <a class="tab tab-active bg-yellow-400 text-black font-semibold rounded" data-tab="all">All</a>
+                <a class="tab text-gray-600 hover:bg-gray-100 rounded" data-tab="open">Open</a>
+                <a class="tab text-gray-600 hover:bg-gray-100 rounded" data-tab="closed">Closed</a>
+            </div>
+
+            <!-- Issues Header -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-gray-600"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800"><span id="issue-count">0</span> Issues</h2>
+                        <p class="text-gray-500 text-sm">Track and manage your project issues</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        <span class="text-gray-600 text-sm">Open</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 bg-purple-500 rounded-full"></span>
+                        <span class="text-gray-600 text-sm">Closed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loading-spinner" class="flex justify-center items-center py-20">
+                <span class="loading loading-spinner loading-lg text-purple-600"></span>
+            </div>
+
+            <!-- Issues Grid -->
+            <div id="issues-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Issue cards will be inserted here -->
+            </div>
+        </div>
+
     <script src="./js/script.js"></script>
 
 </body>
