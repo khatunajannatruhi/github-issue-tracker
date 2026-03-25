@@ -39,3 +39,116 @@ usernameInput.addEventListener('keypress', (e) => {
         passwordInput.focus();
     }
 });
+
+// State Management
+let allIssues = [];
+let filteredIssues = [];
+let currentTab = 'all';
+
+// Additional DOM Elements
+const mainPage = document.getElementById('main-page');
+const issuesGrid = document.getElementById('issues-grid');
+const loadingSpinner = document.getElementById('loading-spinner');
+const issueCountElement = document.getElementById('issue-count');
+
+// Update login function to show main page
+function handleLogin() {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (username === DEMO_CREDENTIALS.username && password === DEMO_CREDENTIALS.password) {
+        loginPage.classList.add('hidden');
+        mainPage.classList.remove('hidden');
+        loadAllIssues();
+    } else {
+        alert('Invalid credentials! Please use:\nUsername: admin\nPassword: admin123');
+    }
+}
+
+// Fetch Issues from API
+async function loadAllIssues() {
+    showLoading(true);
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/issues`);
+        const data = await response.json();
+        
+        if (data.status === 'success' && data.data) {
+            allIssues = data.data;
+            filteredIssues = [...allIssues];
+            renderIssues(filteredIssues);
+        } else {
+            issuesGrid.innerHTML = '<p class="text-center text-gray-500 col-span-4">Failed to load issues.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching issues:', error);
+        issuesGrid.innerHTML = '<p class="text-center text-gray-500 col-span-4">Error loading issues.</p>';
+    } finally {
+        showLoading(false);
+    }
+}
+
+// Render Issues
+function renderIssues(issues) {
+    issuesGrid.innerHTML = '';
+    updateIssueCount(issues.length);
+
+    if (issues.length === 0) {
+        issuesGrid.innerHTML = '<p class="text-center text-gray-500 col-span-4">No issues found.</p>';
+        return;
+    }
+
+    issues.forEach(issue => {
+        const card = createIssueCard(issue);
+        issuesGrid.appendChild(card);
+    });
+}
+
+// Create Issue Card
+function createIssueCard(issue) {
+    const isOpen = issue.status.toLowerCase() === 'open';
+    const borderClass = isOpen ? 'border-t-4 border-green-500' : 'border-t-4 border-purple-500';
+    
+    const card = document.createElement('div');
+    card.className = `card bg-white shadow-md cursor-pointer hover:shadow-lg transition-shadow ${borderClass}`;
+
+    const createdDate = new Date(issue.createdAt).toLocaleDateString('en-US', {
+        month: 'numeric', day: 'numeric', year: 'numeric'
+    });
+
+    const labelsHTML = issue.labels.map(label => 
+        `<span class="badge badge-sm bg-orange-500 text-white">${label}</span>`
+    ).join('');
+
+    card.innerHTML = `
+        <div class="card-body p-4">
+            <div class="flex justify-between items-start">
+                <span class="${isOpen ? 'text-green-500' : 'text-purple-500'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </span>
+                <span class="badge badge-sm bg-red-500 text-white">${issue.priority}</span>
+            </div>
+            <h3 class="font-bold text-gray-800 text-sm mt-2">${issue.title}</h3>
+            <p class="text-gray-500 text-xs mt-1">${issue.description}</p>
+            <div class="flex flex-wrap gap-1 mt-3">${labelsHTML}</div>
+            <div class="mt-4 pt-3 border-t border-gray-100">
+                <p class="text-gray-500 text-xs">#${issue.id} by ${issue.author}</p>
+                <p class="text-gray-400 text-xs">${createdDate}</p>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+// Utility Functions
+function showLoading(show) {
+    loadingSpinner.classList.toggle('hidden', !show);
+    issuesGrid.classList.toggle('hidden', show);
+}
+
+function updateIssueCount(count) {
+    issueCountElement.textContent = count;
+}
