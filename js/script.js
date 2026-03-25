@@ -152,3 +152,53 @@ function showLoading(show) {
 function updateIssueCount(count) {
     issueCountElement.textContent = count;
 }
+
+// Tab Elements
+const tabs = document.querySelectorAll('[data-tab]');
+
+// Filter by Tab
+function filterByTab(issues, tab) {
+    switch (tab) {
+        case 'open':
+            return issues.filter(issue => issue.status.toLowerCase() === 'open');
+        case 'closed':
+            return issues.filter(issue => issue.status.toLowerCase() === 'closed');
+        default:
+            return issues;
+    }
+}
+
+// Set Active Tab
+function setActiveTab(tab) {
+    currentTab = tab;
+    
+    tabs.forEach(t => {
+        t.classList.remove('tab-active', 'bg-yellow-400', 'bg-green-500', 'bg-purple-600', 'text-white', 'text-black');
+        t.classList.add('text-gray-600');
+    });
+
+    const activeTab = document.querySelector(`[data-tab="${tab}"]`);
+    activeTab.classList.remove('text-gray-600');
+    
+    switch (tab) {
+        case 'all':
+            activeTab.classList.add('tab-active', 'bg-yellow-400', 'text-black');
+            break;
+        case 'open':
+            activeTab.classList.add('tab-active', 'bg-green-500', 'text-white');
+            break;
+        case 'closed':
+            activeTab.classList.add('tab-active', 'bg-purple-600', 'text-white');
+            break;
+    }
+
+    filteredIssues = filterByTab(allIssues, tab);
+    renderIssues(filteredIssues);
+}
+
+// Tab Event Listeners
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        setActiveTab(tab.dataset.tab);
+    });
+});
